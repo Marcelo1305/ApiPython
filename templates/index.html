@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Formulário com Campos DateTime</title>
+</head>
+<body>
+    <form id="meuForm">
+        <label for="data_inicial">Data Inicial:</label>
+        <input type="datetime-local" id="data_inicial" name="data_inicial"><br><br>
+        
+        <label for="data_final">Data Final:</label>
+        <input type="datetime-local" id="data_final" name="data_final"><br><br>
+
+        <input type="submit" value="Enviar">
+    </form>
+    <h1 id="resultado">teste</h1>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+    <script>
+        document.getElementById('meuForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+
+            var dataInicial = moment(document.getElementById('data_inicial').value).format('YYYY-MM-DD HH:mm:ss');
+            var dataFinal = moment(document.getElementById('data_final').value).format('YYYY-MM-DD HH:mm:ss');
+
+            console.log(JSON.stringify({ dataInicial, dataFinal }));
+            fetch('/api', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ dataInicial, dataFinal }),
+                
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('Resposta do servidor:', data);
+                let resultado = document.getElementById('resultado');
+                resultado.innerHTML = data.horas
+            })
+            .catch((error) => {
+                console.error('Erro:', error);
+            });
+        });
+    </script>
+</body>
+</html>
