@@ -52,4 +52,8 @@ def calcular_horas(data_inicial, data_final):
     else:
         raise Exception("Data inicial deve ser menor que a data final")
 
-    return horas
+    # Converter os segundos totais em horas e minutos
+    horas_totais = horas.total_seconds() // 3600
+    minutos_totais = (horas.total_seconds() % 3600) // 60
+
+    return f'{int(horas_totais)} horas e {int(minutos_totais)} minutos'
