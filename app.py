@@ -23,7 +23,7 @@ def recebe_json():
         data1 = datetime.strptime(data_inicial, '%Y-%m-%d %H:%M:%S')
         data_final = data['dataFinal']
         data2 = datetime.strptime(data_final, '%Y-%m-%d %H:%M:%S')
-        returno = jsonify({'horas': str(calcular_horas(data1, data2))})
+        returno = jsonify({'horas': str(calcular_horas(data1, data2, data['dados']))})
         return returno
 
         #return jsonify({'message': 'JSON recebido com sucesso'}), 200
