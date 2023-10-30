@@ -1,48 +1,278 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Formulário com Campos DateTime</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Formulário com Campos DateTime</title>
+  <script src="index.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
 </head>
+
 <body>
-    <form id="meuForm">
-        <label for="data_inicial">Data Inicial:</label>
-        <input type="datetime-local" id="data_inicial" name="data_inicial"><br><br>
-        
-        <label for="data_final">Data Final:</label>
-        <input type="datetime-local" id="data_final" name="data_final"><br><br>
+  <style>
+    * {
+      box-sizing: border-box;
+    }
 
-        <input type="submit" value="Enviar">
-    </form>
-    <h1 id="resultado">teste</h1>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
-    <script>
-        document.getElementById('meuForm').addEventListener('submit', function(event) {
-            event.preventDefault();
+    body {
+      font-family: Arial, Helvetica, sans-serif;
+    }
 
-            var dataInicial = moment(document.getElementById('data_inicial').value).format('YYYY-MM-DD HH:mm:ss');
-            var dataFinal = moment(document.getElementById('data_final').value).format('YYYY-MM-DD HH:mm:ss');
+    /* Style the header */
+    header {
+      background-color: #666;
+      padding: 30px;
+      text-align: center;
+      font-size: 35px;
+      color: white;
+    }
 
-            console.log(JSON.stringify({ dataInicial, dataFinal }));
-            fetch('/api', {
-                method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ dataInicial, dataFinal }),
-                
-            })
-            .then(response => response.json())
-            .then(data => {
-                console.log('Resposta do servidor:', data);
-                let resultado = document.getElementById('resultado');
-                resultado.innerHTML = data.horas
-            })
-            .catch((error) => {
-                console.error('Erro:', error);
-            });
+    /* Create two columns/boxes that floats next to each other */
+    nav {
+      float: left;
+      width: 30%;
+      height: 300px;
+      /* only for demonstration, should be removed */
+      background: #ccc;
+      padding: 20px;
+    }
+
+    /* Style the list inside the menu */
+    nav ul {
+      list-style-type: none;
+      padding: 0;
+    }
+
+    article {
+      float: left;
+      padding: 20px;
+      width: 70%;
+      background-color: #f1f1f1;
+      height: 300px;
+      /* only for demonstration, should be removed */
+    }
+
+    /* Clear floats after the columns */
+    section::after {
+      content: "";
+      display: table;
+      clear: both;
+    }
+
+    /* Style the footer */
+    footer {
+      background-color: #777;
+      padding: 10px;
+      text-align: center;
+      color: white;
+    }
+
+    /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
+    @media (max-width: 600px) {
+
+      nav,
+      article {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+
+    body {
+      background-color: rgb(228, 227, 227);
+    }
+
+    div {
+      display: block;
+    }
+
+    table,
+    th,
+    td {
+      border: 1px solid black;
+      border-radius: 10px;
+    }
+
+    #tabela {
+      width: 70%;
+    }
+
+    .centro {
+      text-align: center;
+      border-collapse: collapse;
+    }
+  </style>
+  <h2>Avaliação II</h2>
+  <p>Desenvolver um algoritmo que seja capaz de receber dois parâmetros com data e hora e, a partir destes, calcular as horas úteis entre as datas. Como apoio, deve ser adotado uma tabela de expediente, contendo os campos abaixo.
+
+    Dia da semana, Flag de dia útil ou não, Hora de início do turno, Hora de inicio do almoço, Hora de término do almoço e Hora de término do expediente.
+    
+    Sábado e domingo devem ser considerados dias não úteis.</p>
+
+  <header>
+    <h2>Calculo de Horas úteis</h2>
+  </header>
+
+  <section>
+    <nav>
+      <form class="centro" id="meuForm">
+        <div class="row">
+          <label for="data_inicial">Data Inicial:</label>
+          <input type="datetime-local" id="data_inicial" name="data_inicial" required><br><br>
+  
+          <label for="data_final">Data Final:</label>
+          <input type="datetime-local" id="data_final" name="data_final" required><br><br>
+  
+          <input type="submit" value="Calcular">
+        </div>
+      </form>
+      <h1 class="centro" id="resultado">teste</h1>
+    </nav>
+
+    <article>
+      <table class="centro" id="tabela">
+        <thead style="border-collapse: collapse; text-align: center;">
+          <h2>Dias Úteis</h2>
+        </thead>
+        <thead>
+          <tr>
+            <th>Dia</th>
+            <th>Hora Inicial</th>
+            <th>Hora Almoço</th>
+            <th>Retorno Almoço</th>
+            <th>Hora Saída</th>
+            <th>Util</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Seguna</td>
+            <td contenteditable="true">08:00:00</td>
+            <td contenteditable="true">12:00:00</td>
+            <td contenteditable="true">13:00:00</td>
+            <td contenteditable="true">17:00:00</td>
+            <td contenteditable="true"><input type="checkbox"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true">Terça</td>
+            <td contenteditable="true">08:00:00</td>
+            <td contenteditable="true">12:00:00</td>
+            <td contenteditable="true">13:00:00</td>
+            <td contenteditable="true">17:00:00</td>
+            <td contenteditable="true"><input type="checkbox"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true">Quarta</td>
+            <td contenteditable="true">08:00:00</td>
+            <td contenteditable="true">12:00:00</td>
+            <td contenteditable="true">13:00:00</td>
+            <td contenteditable="true">17:00:00</td>
+            <td contenteditable="true"><input type="checkbox"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true">Quinta</td>
+            <td contenteditable="true">08:00:00</td>
+            <td contenteditable="true">12:00:00</td>
+            <td contenteditable="true">13:00:00</td>
+            <td contenteditable="true">17:00:00</td>
+            <td contenteditable="true"><input type="checkbox"></td>
+          </tr>
+          <tr>
+            <td contenteditable="true">Sexta</td>
+            <td contenteditable="true">08:00:00</td>
+            <td contenteditable="true">12:00:00</td>
+            <td contenteditable="true">13:00:00</td>
+            <td contenteditable="true">17:00:00</td>
+            <td contenteditable="true"><input type="checkbox"></td>
+          </tr>
+        </tbody>
+
+      </table>
+    </article>
+  </section>
+
+  <footer>
+    <p></p>
+  </footer>
+  
+  
+  <script>
+    let horasValidas = true;
+      document.getElementById("tabela").addEventListener("input", function (event) {
+      const target = event.target;
+
+      if (target.tagName === "TD") {
+        const hora = target.innerText;
+
+        const formatoValido = /^([01]?[0-9]|2[0-3]):[0-5][0-9]:[0-5][0-9]$/.test(hora);
+
+        if (!formatoValido) {
+          horasValidas = false;
+        }else{
+          horasValidas = true;
+        }
+      }
+    });
+
+    document.getElementById('meuForm').addEventListener('submit', function (event) {
+      event.preventDefault();
+if(!horasValidas) return alert('Todos os horarios devem estar no formato (HH:MM:SS)');
+      let dados = extrairDadosDaTabela();
+
+      var dataInicial = moment(document.getElementById('data_inicial').value).format('YYYY-MM-DD HH:mm:ss');
+      var dataFinal = moment(document.getElementById('data_final').value).format('YYYY-MM-DD HH:mm:ss');
+
+      fetch('/api', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ dataInicial, dataFinal, dados}),
+
+      })
+        .then(response => response.json())
+        .then(data => {
+          let resultado = document.getElementById('resultado');
+          resultado.innerHTML = data.horas
+        })
+        .catch((error) => {
+          console.error('Erro:', error);
         });
-    </script>
+    });
+
+    function extrairDadosDaTabela() {
+  const tabela = document.getElementById('tabela');
+  const linhas = tabela.querySelectorAll('tbody tr');
+
+  const dias_da_semana = [];
+
+  linhas.forEach((linha, index) => {
+    const colunas = linha.querySelectorAll('td');
+
+    const dia = index;
+    const hora_inicial = colunas[1].textContent;
+    const hora_almoco = colunas[2].textContent;
+    const retorno_almoco = colunas[3].textContent;
+    const hora_saida = colunas[4].textContent;
+    const util = colunas[5].querySelector('input').checked;
+
+    const dados = {
+      'dia': dia,
+      'hora_inicial': hora_inicial,
+      'hora_almoco': hora_almoco,
+      'retorno_almoco': retorno_almoco,
+      'hora_saida': hora_saida,
+      'util': util
+    };
+
+    dias_da_semana.push(dados);
+  });
+
+  return dias_da_semana;
+}
+
+  </script>
 </body>
+
 </html>
