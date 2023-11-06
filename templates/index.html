@@ -104,10 +104,12 @@
     }
   </style>
   <h2>Avaliação II</h2>
-  <p>Desenvolver um algoritmo que seja capaz de receber dois parâmetros com data e hora e, a partir destes, calcular as horas úteis entre as datas. Como apoio, deve ser adotado uma tabela de expediente, contendo os campos abaixo.
+  <p>Desenvolver um algoritmo que seja capaz de receber dois parâmetros com data e hora e, a partir destes, calcular as
+    horas úteis entre as datas. Como apoio, deve ser adotado uma tabela de expediente, contendo os campos abaixo.
 
-    Dia da semana, Flag de dia útil ou não, Hora de início do turno, Hora de inicio do almoço, Hora de término do almoço e Hora de término do expediente.
-    
+    Dia da semana, Flag de dia útil ou não, Hora de início do turno, Hora de inicio do almoço, Hora de término do almoço
+    e Hora de término do expediente.
+
     Sábado e domingo devem ser considerados dias não úteis.</p>
 
   <header>
@@ -120,10 +122,10 @@
         <div class="row">
           <label for="data_inicial">Data Inicial:</label>
           <input type="datetime-local" id="data_inicial" name="data_inicial" required><br><br>
-  
+
           <label for="data_final">Data Final:</label>
           <input type="datetime-local" id="data_final" name="data_final" required><br><br>
-  
+
           <input type="submit" value="Calcular">
         </div>
       </form>
@@ -195,11 +197,11 @@
   <footer>
     <p></p>
   </footer>
-  
-  
+
+
   <script>
     let horasValidas = true;
-      document.getElementById("tabela").addEventListener("input", function (event) {
+    document.getElementById("tabela").addEventListener("input", function (event) {
       const target = event.target;
 
       if (target.tagName === "TD") {
@@ -209,7 +211,7 @@
 
         if (!formatoValido) {
           horasValidas = false;
-        }else{
+        } else {
           horasValidas = true;
         }
       }
@@ -217,7 +219,7 @@
 
     document.getElementById('meuForm').addEventListener('submit', function (event) {
       event.preventDefault();
-if(!horasValidas) return alert('Todos os horarios devem estar no formato (HH:MM:SS)');
+      if (!horasValidas) return alert('Todos os horarios devem estar no formato (HH:MM:SS)');
       let dados = extrairDadosDaTabela();
 
       var dataInicial = moment(document.getElementById('data_inicial').value).format('YYYY-MM-DD HH:mm:ss');
@@ -228,49 +230,56 @@ if(!horasValidas) return alert('Todos os horarios devem estar no formato (HH:MM:
         headers: {
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ dataInicial, dataFinal, dados}),
+        body: JSON.stringify({ dataInicial, dataFinal, dados }),
 
       })
         .then(response => response.json())
         .then(data => {
-          let resultado = document.getElementById('resultado');
-          resultado.innerHTML = data.horas
+          if(data.horas != undefined) {
+            let resultado = document.getElementById('resultado');
+            resultado.innerHTML = data.horas;
+          } else {
+            throw('', data.error);
+          }
         })
         .catch((error) => {
           console.error('Erro:', error);
+          let resultado = document.getElementById('resultado');
+            resultado.innerHTML = '';
+          alert('Erro:'+ error);
         });
     });
 
     function extrairDadosDaTabela() {
-  const tabela = document.getElementById('tabela');
-  const linhas = tabela.querySelectorAll('tbody tr');
+      const tabela = document.getElementById('tabela');
+      const linhas = tabela.querySelectorAll('tbody tr');
 
-  const dias_da_semana = [];
+      const dias_da_semana = [];
 
-  linhas.forEach((linha, index) => {
-    const colunas = linha.querySelectorAll('td');
+      linhas.forEach((linha, index) => {
+        const colunas = linha.querySelectorAll('td');
 
-    const dia = index;
-    const hora_inicial = colunas[1].textContent;
-    const hora_almoco = colunas[2].textContent;
-    const retorno_almoco = colunas[3].textContent;
-    const hora_saida = colunas[4].textContent;
-    const util = colunas[5].querySelector('input').checked;
+        const dia = index;
+        const hora_inicial = colunas[1].textContent;
+        const hora_almoco = colunas[2].textContent;
+        const retorno_almoco = colunas[3].textContent;
+        const hora_saida = colunas[4].textContent;
+        const util = colunas[5].querySelector('input').checked;
 
-    const dados = {
-      'dia': dia,
-      'hora_inicial': hora_inicial,
-      'hora_almoco': hora_almoco,
-      'retorno_almoco': retorno_almoco,
-      'hora_saida': hora_saida,
-      'util': util
-    };
+        const dados = {
+          'dia': dia,
+          'hora_inicial': hora_inicial,
+          'hora_almoco': hora_almoco,
+          'retorno_almoco': retorno_almoco,
+          'hora_saida': hora_saida,
+          'util': util
+        };
 
-    dias_da_semana.push(dados);
-  });
+        dias_da_semana.push(dados);
+      });
 
-  return dias_da_semana;
-}
+      return dias_da_semana;
+    }
 
   </script>
 </body>
