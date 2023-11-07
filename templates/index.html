@@ -7,9 +7,15 @@
   <title>Formulário com Campos DateTime</title>
   <script src="index.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
+  <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 </head>
 
 <body>
+  <script>
+    Prism.highlightAll();
+  </script>
+
   <style>
     * {
       box-sizing: border-box;
@@ -193,12 +199,119 @@
       </table>
     </article>
   </section>
+  <button onclick="mostrarCodigo()">Mostrar codigo</button>
+  <footer id="footer" hidden="true">
+    <h1>Código em linguagem python com os endpoints</h1>
+    <pre class="language-python">
+      <code>
+        from flask import Flask, jsonify, request, render_template
+        from datetime import datetime
+        from func import calcular_horas
+        
+        app = Flask(__name__)
+        
+        @app.route('/')
+        def index():
+            return render_template('index.html')
+        
+        @app.route('/api', methods=['GET'])
+        def api():
+            return jsonify({'message': 'Olá, mundo! Esta é uma API básica em Python.'})
+        
+        @app.route('/api', methods=['POST'])
+        def recebe_json():
+            try:
+                # Obter os dados do corpo da requisição em formato JSON
+                data = request.get_json()
+        
+                # Extrair as datas
+                data_inicial = data['dataInicial']
+                data1 = datetime.strptime(data_inicial, '%Y-%m-%d %H:%M:%S')
+                data_final = data['dataFinal']
+                data2 = datetime.strptime(data_final, '%Y-%m-%d %H:%M:%S')
+                resultado = calcular_horas(data1, data2, data.get('dados'))
+        
+                # Retorna o resultado
+                return jsonify({'horas': str(resultado)}), 200
+        
+                #return jsonify({'message': 'JSON recebido com sucesso'}), 200
+        
+            except Exception as e:
+                return jsonify({'error': str(e)}), 400
+        
+        
+        
+        if __name__ == '__main__':
+            app.run(debug=True)
+      </code>
 
-  <footer>
-    <p></p>
+    </pre><br><br>
+    <h1>Código em linguagem python com a funcao de calculo</h1>
+    <pre class="language-python">
+
+      <code>
+        from datetime import datetime, timedelta
+
+        def calcular_horas(data_inicial, data_final, dados = None):
+            # Inicializa a variável horas como um objeto timedelta, que representa a diferença entre duas datas ou horas
+            horas = timedelta()
+        
+            # Atribui o valor de data_inicial à variável data_atual
+            data_atual = data_inicial
+        
+            if dados == None:
+                # Define uma lista de dicionários com informações sobre os dias da semana e horários associados
+                dados = [
+                    {'dia': 0, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                    {'dia': 1, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                    {'dia': 2, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                    {'dia': 3, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                    {'dia': 4, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                    {'dia': 5, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
+                    {'dia': 6, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
+                ]
+        
+            # Verifica se a data inicial é menor que a data final
+            if data_inicial < data_final:
+        
+                # Enquanto a data atual for menor ou igual à data final
+                while data_atual.date() <= data_final.date():
+                    # Procura na lista dados por um dicionário correspondente ao dia da semana da data_atual e que seja considerado útil
+                    dia = next((x for x in dados if x['dia'] == data_atual.weekday() and x['util']), None)
+        
+                    # Verifica se foi encontrado um dicionário correspondente ao dia da semana
+                    if dia is not None:
+                        # Converte os horários de string para objetos datetime
+                        h_inicial = datetime.strptime(dia['hora_inicial'], '%H:%M:%S')
+                        h_almoco = datetime.strptime(dia['hora_almoco'], '%H:%M:%S')
+                        h_retorno = datetime.strptime(dia['retorno_almoco'], '%H:%M:%S')
+                        h_fim = datetime.strptime(dia['hora_saida'], '%H:%M:%S')
+        
+                        # Ajusta os horários de acordo com a data atual
+                        h_inicial = max(data_inicial, datetime.combine(data_atual.date(), h_inicial.time()))
+                        h_almoco = min(data_final, datetime.combine(data_atual.date(), h_almoco.time()))
+                        h_retorno = max(data_inicial, datetime.combine(data_atual.date(), h_retorno.time()))
+                        h_fim = min(data_final, datetime.combine(data_atual.date(), h_fim.time()))
+        
+                        # Calcula e acumula as horas trabalhadas
+                        horas += h_almoco - h_inicial if h_almoco > h_inicial else timedelta()
+                        horas += h_fim - h_retorno if h_fim > h_retorno else timedelta()
+        
+                    # Avança para o próximo dia
+                    data_atual += timedelta(days=1)
+            else:
+                # Se a data inicial não for menor que a data final, levanta uma exceção
+                raise Exception("Data inicial deve ser menor que a data final")
+        
+            # Converte os segundos totais em horas e minutos
+            horas_totais = horas.total_seconds() // 3600
+            minutos_totais = (horas.total_seconds() % 3600) // 60
+        
+            # Retorna uma string formatada com o total de horas e minutos
+            return f'{int(horas_totais)} horas e {int(minutos_totais)} minutos'
+      </code>
+  </pre>
   </footer>
-
-
   <script>
     let horasValidas = true;
     document.getElementById("tabela").addEventListener("input", function (event) {
@@ -235,20 +348,25 @@
       })
         .then(response => response.json())
         .then(data => {
-          if(data.horas != undefined) {
+          if (data.horas != undefined) {
             let resultado = document.getElementById('resultado');
             resultado.innerHTML = data.horas;
           } else {
-            throw('', data.error);
+            throw ('', data.error);
           }
         })
         .catch((error) => {
           console.error('Erro:', error);
           let resultado = document.getElementById('resultado');
-            resultado.innerHTML = '';
-          alert('Erro:'+ error);
+          resultado.innerHTML = '';
+          alert('Erro:' + error);
         });
     });
+
+    function mostrarCodigo() {
+      let fot = document.getElementById("footer");
+      fot.hidden = !fot.hidden;
+    }
 
     function extrairDadosDaTabela() {
       const tabela = document.getElementById('tabela');
