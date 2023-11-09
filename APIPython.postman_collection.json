@@ -1,0 +1,89 @@
+{
+	"info": {
+		"_postman_id": "11bdb7e5-099c-4a7a-974e-924451acae22",
+		"name": "APIPython",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "19388426"
+	},
+	"item": [
+		{
+			"name": "Post com a tabela",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dataInicial\":\"2023-10-20 08:00:00\",\r\n    \"dataFinal\":\"2023-10-25 17:00:00\",\r\n    \"dados\" : [\r\n                {\"dia\": 0, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true},\r\n                {\"dia\": 1, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true},\r\n                {\"dia\": 2, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true},\r\n                {\"dia\": 3, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true},\r\n                {\"dia\": 4, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true},\r\n                {\"dia\": 5, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true},\r\n                {\"dia\": 6, \"hora_inicial\": \"08:00:00\", \"hora_almoco\": \"12:00:00\", \"retorno_almoco\": \"13:00:00\", \"hora_saida\": \"17:00:00\", \"util\": true}\r\n            ]\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Post sem tabela",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n    \"dataInicial\":\"2023-10-27 08:00:00\",\r\n    \"dataFinal\":\"2023-10-30 17:00:00\"\r\n}",
+					"options": {
+						"raw": {
+							"language": "json"
+						}
+					}
+				},
+				"url": {
+					"raw": "{{baseUrl}}/api",
+					"host": [
+						"{{baseUrl}}"
+					],
+					"path": [
+						"api"
+					]
+				}
+			},
+			"response": []
+		}
+	],
+	"event": [
+		{
+			"listen": "prerequest",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		},
+		{
+			"listen": "test",
+			"script": {
+				"type": "text/javascript",
+				"exec": [
+					""
+				]
+			}
+		}
+	],
+	"variable": [
+		{
+			"key": "baseUrl",
+			"value": "https://apihoras.onrender.com",
+			"type": "string"
+		}
+	]
+}
