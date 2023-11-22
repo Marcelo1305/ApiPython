@@ -20,6 +20,9 @@
     * {
       box-sizing: border-box;
     }
+    .verde{
+      color: rgb(45, 99, 50);
+    }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -70,8 +73,14 @@
     footer {
       background-color: #777;
       padding: 10px;
-      text-align: center;
+      /* text-align: center; */
       color: white;
+    }
+
+    .apresentacao {
+      font-family: Arial, sans-serif;
+      max-width: 1200px;
+      margin: 0 auto;
     }
 
     /* Responsive layout - makes the two columns/boxes stack on top of each other instead of next to each other, on small screens */
@@ -84,6 +93,25 @@
       }
     }
 
+    code {
+      color: aliceblue;
+    }
+
+    pre {
+      background-color: #272626;
+      padding: 10px;
+      overflow-x: auto;
+      border-radius: 5px;
+      margin-bottom: 20px;
+    }
+
+    h2 {
+      color: #333;
+    }
+
+    p {
+      line-height: 1.5;
+    }
 
     body {
       background-color: rgb(228, 227, 227);
@@ -200,117 +228,82 @@
     </article>
   </section>
   <button onclick="mostrarCodigo()" hidden="true">Mostrar codigo</button>
-  <footer id="footer" hidden="true">
-    <h1>Código em linguagem python com os endpoints</h1>
-    <pre class="language-python">
-      <code>
-        from flask import Flask, jsonify, request, render_template
-        from datetime import datetime
-        from func import calcular_horas
+  <footer id="footer">
+    <div class="apresentacao">
+      <h1>Documentação do Código Python</h1>
+      <h2>Função: calcular_horas</h2>
+      <p>
+        Esta função Python calcula a carga horária útil entre duas datas, considerando um conjunto padrão de horários de
+        trabalho em dias úteis.
+      </p>
+      <pre>
+        <code>
+      from datetime import datetime, timedelta
         
-        app = Flask(__name__)
+      def calcular_horas(data_inicial, data_final, dados = None):
+        <span class="verde"># Inicializa a variável horas como um objeto timedelta, que representa a diferença entre duas datas ou horas</span>
+        horas = timedelta()
+  
+        <span class="verde"># Atribui o valor de data_inicial à variável data_atual</span>
+        data_atual = data_inicial
+  
+        if dados == None:
+            <span class="verde"># Define uma lista de dicionários com informações sobre os dias da semana e horários associados</span>
+            dados = [
+                {'dia': 0, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                {'dia': 1, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                {'dia': 2, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                {'dia': 3, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                {'dia': 4, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
+                {'dia': 5, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
+                {'dia': 6, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
+            ]
+  
+        <span class="verde"># Verifica se a data inicial é menor que a data final</span>
+        if data_inicial < data_final:
+  
+            <span class="verde"># Enquanto a data atual for menor ou igual à data final</span>
+            while data_atual.date() <= data_final.date():
+                <span class="verde"># Procura na lista dados por um dicionário correspondente ao dia da semana da data_atual e que seja considerado útil</span>
+                dia = next((x for x in dados if x['dia'] == data_atual.weekday() and x['util']), None)
+  
+                <span class="verde"># Verifica se foi encontrado um dicionário correspondente ao dia da semana</span>
+                if dia is not None:
+                    <span class="verde"># Converte os horários de string para objetos datetime</span>
+                    h_inicial = datetime.strptime(dia['hora_inicial'], '%H:%M:%S')
+                    h_almoco = datetime.strptime(dia['hora_almoco'], '%H:%M:%S')
+                    h_retorno = datetime.strptime(dia['retorno_almoco'], '%H:%M:%S')
+                    h_fim = datetime.strptime(dia['hora_saida'], '%H:%M:%S')
+  
+                    <span class="verde"># Ajusta os horários de acordo com a data atual</span>
+                    h_inicial = max(data_inicial, datetime.combine(data_atual.date(), h_inicial.time()))
+                    h_almoco = min(data_final, datetime.combine(data_atual.date(), h_almoco.time()))
+                    h_retorno = max(data_inicial, datetime.combine(data_atual.date(), h_retorno.time()))
+                    h_fim = min(data_final, datetime.combine(data_atual.date(), h_fim.time()))
+  
+                    <span class="verde"># Calcula e acumula as horas trabalhadas</span>
+                    horas += h_almoco - h_inicial if h_almoco > h_inicial else timedelta()
+                    horas += h_fim - h_retorno if h_fim > h_retorno else timedelta()
+  
+                <span class="verde"># Avança para o próximo dia</span>
+                data_atual += timedelta(days=1)
+        else:
+            <span class="verde"># Se a data inicial não for menor que a data final, levanta uma exceção</span>
+            raise Exception("Data inicial deve ser menor que a data final")
+  
+        <span class="verde"># Converte os segundos totais em horas e minutos</span>
+        horas_totais = horas.total_seconds() // 3600
+        minutos_totais = (horas.total_seconds() % 3600) // 60
+  
+        <span class="verde"># Retorna uma string formatada com o total de horas e minutos</span>
+        return f'{int(horas_totais)} horas e {int(minutos_totais)} minutos'
+        </code>
+      </pre>
+      <h3>Descrição da função:</h3>
+      <p>
         
-        @app.route('/')
-        def index():
-            return render_template('index.html')
-        
-        @app.route('/api', methods=['GET'])
-        def api():
-            return jsonify({'message': 'Olá, mundo! Esta é uma API básica em Python.'})
-        
-        @app.route('/api', methods=['POST'])
-        def recebe_json():
-            try:
-                # Obter os dados do corpo da requisição em formato JSON
-                data = request.get_json()
-        
-                # Extrair as datas
-                data_inicial = data['dataInicial']
-                data1 = datetime.strptime(data_inicial, '%Y-%m-%d %H:%M:%S')
-                data_final = data['dataFinal']
-                data2 = datetime.strptime(data_final, '%Y-%m-%d %H:%M:%S')
-                resultado = calcular_horas(data1, data2, data.get('dados'))
-        
-                # Retorna o resultado
-                return jsonify({'horas': str(resultado)}), 200
-        
-                #return jsonify({'message': 'JSON recebido com sucesso'}), 200
-        
-            except Exception as e:
-                return jsonify({'error': str(e)}), 400
-        
-        
-        
-        if __name__ == '__main__':
-            app.run(debug=True)
-      </code>
-
-    </pre><br><br>
-    <h1>Código em linguagem python com a funcao de calculo</h1>
-    <pre class="language-python">
-
-      <code>
-        from datetime import datetime, timedelta
-
-        def calcular_horas(data_inicial, data_final, dados = None):
-            # Inicializa a variável horas como um objeto timedelta, que representa a diferença entre duas datas ou horas
-            horas = timedelta()
-        
-            # Atribui o valor de data_inicial à variável data_atual
-            data_atual = data_inicial
-        
-            if dados == None:
-                # Define uma lista de dicionários com informações sobre os dias da semana e horários associados
-                dados = [
-                    {'dia': 0, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                    {'dia': 1, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                    {'dia': 2, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                    {'dia': 3, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                    {'dia': 4, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                    {'dia': 5, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
-                    {'dia': 6, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
-                ]
-        
-            # Verifica se a data inicial é menor que a data final
-            if data_inicial < data_final:
-        
-                # Enquanto a data atual for menor ou igual à data final
-                while data_atual.date() <= data_final.date():
-                    # Procura na lista dados por um dicionário correspondente ao dia da semana da data_atual e que seja considerado útil
-                    dia = next((x for x in dados if x['dia'] == data_atual.weekday() and x['util']), None)
-        
-                    # Verifica se foi encontrado um dicionário correspondente ao dia da semana
-                    if dia is not None:
-                        # Converte os horários de string para objetos datetime
-                        h_inicial = datetime.strptime(dia['hora_inicial'], '%H:%M:%S')
-                        h_almoco = datetime.strptime(dia['hora_almoco'], '%H:%M:%S')
-                        h_retorno = datetime.strptime(dia['retorno_almoco'], '%H:%M:%S')
-                        h_fim = datetime.strptime(dia['hora_saida'], '%H:%M:%S')
-        
-                        # Ajusta os horários de acordo com a data atual
-                        h_inicial = max(data_inicial, datetime.combine(data_atual.date(), h_inicial.time()))
-                        h_almoco = min(data_final, datetime.combine(data_atual.date(), h_almoco.time()))
-                        h_retorno = max(data_inicial, datetime.combine(data_atual.date(), h_retorno.time()))
-                        h_fim = min(data_final, datetime.combine(data_atual.date(), h_fim.time()))
-        
-                        # Calcula e acumula as horas trabalhadas
-                        horas += h_almoco - h_inicial if h_almoco > h_inicial else timedelta()
-                        horas += h_fim - h_retorno if h_fim > h_retorno else timedelta()
-        
-                    # Avança para o próximo dia
-                    data_atual += timedelta(days=1)
-            else:
-                # Se a data inicial não for menor que a data final, levanta uma exceção
-                raise Exception("Data inicial deve ser menor que a data final")
-        
-            # Converte os segundos totais em horas e minutos
-            horas_totais = horas.total_seconds() // 3600
-            minutos_totais = (horas.total_seconds() % 3600) // 60
-        
-            # Retorna uma string formatada com o total de horas e minutos
-            return f'{int(horas_totais)} horas e {int(minutos_totais)} minutos'
-      </code>
-  </pre>
+      </p>
+    </div>
   </footer>
   <script>
     let horasValidas = true;
@@ -398,7 +391,6 @@
 
       return dias_da_semana;
     }
-
   </script>
 </body>
 
