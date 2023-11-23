@@ -1,11 +1,13 @@
-
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Outra Página</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.3/css/all.min.css" integrity="sha512-m2EAhDNzHYT6foKIq1OwJgGzJloj28NikE7qAiK70Fa0bPJ2p8OnLRm0qFkgJom6Xb09j21nTq52zciG1L1D2Q==" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
     <style>
         body {
             font-family: 'Arial', sans-serif;
@@ -13,24 +15,24 @@
             padding: 0;
             background-color: rgb(126, 155, 187);
         }
-        
+
         .container {
             max-width: 1200px;
             margin: 0 auto;
             padding: 20px;
         }
-        
+
         h1 {
             text-align: center;
             color: #333;
         }
-        
+
         .photo-list {
             display: flex;
             flex-direction: column;
             gap: 20px;
         }
-        
+
         .photo {
             border-radius: 8px;
             overflow: hidden;
@@ -38,16 +40,16 @@
             transition: transform 0.3s ease-in-out;
             background-color: rgb(184, 184, 184);
         }
-        
+
         .photo:hover {
             transform: scale(1.05);
         }
-        
+
         img {
             width: 100%;
             height: auto;
         }
-        
+
         .caption {
             padding: 10px;
             text-align: center;
@@ -55,9 +57,49 @@
             margin: 0;
             border-top: 1px solid #ddd;
         }
-        </style>
+
+        footer {
+            background-color: #080825;
+            padding: 10px;
+            text-align: center;
+            color: white;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+        header {
+            background-color: #080825;
+            color: #fff;
+            text-align: center;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        header a {
+            color: #fff;
+            text-decoration: none;
+            margin-left: 20px; /* Adiciona espaçamento entre os links */
+        }
+    </style>
 </head>
+
 <body>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
+    <header>
+        <div>
+            <h1>Avaliação II</h1>
+            <p>Apresentação do código font.</p>
+        </div>
+        <div>
+            <a href="https://github.com/Marcelo1305/ApiPython.git" target="_blank" class="text-white">
+                <i class="bi bi-github"></i> GitHub
+            </a>
+            <a href="../static/img/APIPython.postman_collection.json" download="exemplo.json" class="text-white">
+                <i class="fas fa-file-download"></i> Colection Postman
+            </a>
+        </div>
+    </header>
     <div class="container">
         <h1>Apresentação do código do front.</h1>
 
@@ -65,24 +107,30 @@
             <div class="photo">
                 <img src=" {{ url_for('static', filename='img/func_formato_hora.png') }} " alt="Foto 1">
                 <p>
-                    .  Está função valida o formato dos dados que são inseridos nos campos referentes a hora no formato <b>(HH:MM:SS)</b><br>
+                    . Está função valida o formato dos dados que são inseridos nos campos referentes a hora no formato
+                    <b>(HH:MM:SS)</b><br>
                     setando a variavel horasValidas como false caso haja alguma hora no formato incorreto.
                 </p>
             </div><br>
             <div class="photo">
                 <img src=" {{ url_for('static', filename='img/func_extrair_dados_tabela.png') }} " alt="Foto 2">
                 <p>
-                    .  Nesse ponto do codigo é extraido as informações da tabela com os dias e horarios de trabalho e se são util ou não.
+                    . Nesse ponto do codigo é extraido as informações da tabela com os dias e horarios de trabalho e se
+                    são util ou não.
                 </p>
             </div><br>
             <div class="photo">
                 <img src=" {{ url_for('static', filename='img/func_envio_api.png') }} " alt="Foto 3">
                 <p>
-                    .  Neste ponto é onde é feita a requisição para o backend para realizar os calculos e retornar para o frontend uma string com as horas e minutos uteis de trabalho <br>
-                    .  Onde inicialmente é validado se não há nenhuma hora invalida e caso tenha retorna um alert para a tela indicando que todos os horarios devem estar no formato correto.<br>
-                    .  Em seguida chama a função <b>extrairDadosDaTabela()</b> vista anteriormente para pegar as informações de carga horaria. <br>
-                    .  Em seguida extrai as datas e horas de inicio e fim dos calculos dos inputs ja no formato aceito pela api. <br>
-                    .  E caso api retornar um erro tambem é informado na tela o erro ocorrido na api.
+                    . Neste ponto é onde é feita a requisição para o backend para realizar os calculos e retornar para o
+                    frontend uma string com as horas e minutos uteis de trabalho <br>
+                    . Onde inicialmente é validado se não há nenhuma hora invalida e caso tenha retorna um alert para a
+                    tela indicando que todos os horarios devem estar no formato correto.<br>
+                    . Em seguida chama a função <b>extrairDadosDaTabela()</b> vista anteriormente para pegar as
+                    informações de carga horaria. <br>
+                    . Em seguida extrai as datas e horas de inicio e fim dos calculos dos inputs ja no formato aceito
+                    pela api. <br>
+                    . E caso api retornar um erro tambem é informado na tela o erro ocorrido na api.
 
                 </p>
             </div>
@@ -95,46 +143,67 @@
         <div class="photo-grid">
             <div class="photo">
                 <img src=" {{ url_for('static', filename='img/3-20.png') }} " alt="Foto 1">
-                <p>.  Nessa parte do codigo é declarado uma variavel horas(<b>timedelta()</b>) para realizar a comparação entre as datas e pegar a diferença entre elas<br>
-                    .  Logo após é decladado uma variavel <b>data_atual</b> que inicialmente recebe o valor da data_inicial<br>
-                    .  Essa variavel servirá para representar os dias a serem validados. <br>
-                    .  Então é validado se o usuario informou o parametro <b>dados</b> levando em consideração que este parametro não é obrigatorio <br>
-                    e caso não tenha cido informado cria um dicionario de dados com as informações padrão de carga horaria e atribui a variavel <b>dados</b>.
+                <p>. Nessa parte do codigo é declarado uma variavel horas(<b>timedelta()</b>) para realizar a comparação
+                    entre as datas e pegar a diferença entre elas<br>
+                    . Logo após é decladado uma variavel <b>data_atual</b> que inicialmente recebe o valor da
+                    data_inicial<br>
+                    . Essa variavel servirá para representar os dias a serem validados. <br>
+                    . Então é validado se o usuario informou o parametro <b>dados</b> levando em consideração que este
+                    parametro não é obrigatorio <br>
+                    e caso não tenha cido informado cria um dicionario de dados com as informações padrão de carga
+                    horaria e atribui a variavel <b>dados</b>.
                 </p>
             </div><br>
             <div class="photo">
                 <img src=" {{ url_for('static', filename='img/22-49.png') }} " alt="Foto 2">
                 <p>
-                    .  Nessa parte do código é feita uma validação se a <b>data_inicial</b> é menor que a <b>data_final</b><br><br>
-                    .  Então ocorre uma iteração entre a <b>data_atual</b> e a <b>data_final</b> acrescentando um dia na <b>data_atual</b> ao final do loop while. <br><br>
-                    .  Na linha 28 é procurado no dicionario de dados se existe o dia da semana correspondente a <b>data_atual</b> sendo util. <br><br>
-                    .  Se esse dia da semana for  considerado util extrai desse dia os horarios de entrada<b>(h_inicial)</b>
+                    . Nessa parte do código é feita uma validação se a <b>data_inicial</b> é menor que a
+                    <b>data_final</b><br><br>
+                    . Então ocorre uma iteração entre a <b>data_atual</b> e a <b>data_final</b> acrescentando um dia na
+                    <b>data_atual</b> ao final do loop while. <br><br>
+                    . Na linha 28 é procurado no dicionario de dados se existe o dia da semana correspondente a
+                    <b>data_atual</b> sendo util. <br><br>
+                    . Se esse dia da semana for considerado util extrai desse dia os horarios de
+                    entrada<b>(h_inicial)</b>
                     , horario de saida para o almoço<b>(h_almoco)</b>
                     , horario de retorno do almoço<b>(h_retorno)</b>
                     e o horario do fim do expediente <b>(h_fim)</b><br><br>
-                    .  Nas linhas de 39 a 42 é extraido as datas e horas a serem usadas para realizar os calculos sendo que o valor a ser considerado sera <br>
-                    <b>h_inicial</b> a maior data entre a <b>data_inicial</b> e a combinação de somente a data da <b>data_atual</b> com o horario da variavel <b>(h_inicial)</b><br>
-                    <b>h_almoco</b> a menor data entre a <b>data_final</b> e a combinação de somente a data da <b>data_atual</b> com o horario da variavel <b>(h_almoco)</b><br>
-                    <b>h_retorno</b> a maior data entre a <b>data_inicial</b> e a combinação de somente a data da <b>data_atual</b> com o horario da variavel <b>(h_retorno)</b><br>
-                    <b>h_fim</b> a monor data entre a <b>data_final</b> e a combinação de somente a data da <b>data_atual</b> com o horario da variavel <b>(h_fim)</b><br><br>
-                    .  Na linha 45 são calculadas as diferenças entre as variaveis (<b>h_almoco</b> - <b>h_inicial</b>) caso a <b>h_inicial</b> for maoir que a <b>h_almoco</b>
-                     caso contrario não acrescenta nada (<b>timedelta</b>)<br>
-                     .  Na linha 46 são calculadas as diferenças entre as variaveis (<b>h_fim</b> - <b>h_retorno</b>) caso a <b>h_fim</b> for maoir que a <b>h_retorno</b>
-                     caso contrario não acrescenta nada (<b>timedelta</b>)<br><br>
-                     .  E por fim é acrescentado um dia na <b>data_atual</b> como dito anteriormente.
+                    . Nas linhas de 39 a 42 é extraido as datas e horas a serem usadas para realizar os calculos sendo
+                    que o valor a ser considerado sera <br>
+                    <b>h_inicial</b> a maior data entre a <b>data_inicial</b> e a combinação de somente a data da
+                    <b>data_atual</b> com o horario da variavel <b>(h_inicial)</b><br>
+                    <b>h_almoco</b> a menor data entre a <b>data_final</b> e a combinação de somente a data da
+                    <b>data_atual</b> com o horario da variavel <b>(h_almoco)</b><br>
+                    <b>h_retorno</b> a maior data entre a <b>data_inicial</b> e a combinação de somente a data da
+                    <b>data_atual</b> com o horario da variavel <b>(h_retorno)</b><br>
+                    <b>h_fim</b> a monor data entre a <b>data_final</b> e a combinação de somente a data da
+                    <b>data_atual</b> com o horario da variavel <b>(h_fim)</b><br><br>
+                    . Na linha 45 são calculadas as diferenças entre as variaveis (<b>h_almoco</b> - <b>h_inicial</b>)
+                    caso a <b>h_inicial</b> for maoir que a <b>h_almoco</b>
+                    caso contrario não acrescenta nada (<b>timedelta</b>)<br>
+                    . Na linha 46 são calculadas as diferenças entre as variaveis (<b>h_fim</b> - <b>h_retorno</b>) caso
+                    a <b>h_fim</b> for maoir que a <b>h_retorno</b>
+                    caso contrario não acrescenta nada (<b>timedelta</b>)<br><br>
+                    . E por fim é acrescentado um dia na <b>data_atual</b> como dito anteriormente.
                 </p>
             </div><br>
             <div class="photo">
                 <img src=" {{ url_for('static', filename='img/50-59.png') }} " alt="Foto 3">
                 <p>
-                    .  E caso a <b>data_inicial</b> for maior que a <b>data_final</b> é retornado uma <b>Exception</b> informando que a data inicial deve ser menor que a data final. <br><br>
-                    .  E ao fim da função é calculado as horas inteiras extraida da variavel <b>horas</b> para a variavel <b>horas_totais</b> 
-                     e os minutos restantes para a variavel <b>minutos_totais</b> <br>
-                     e no retorno da função é formatado uma string informando 'HH' horas e 'MM' minutos
+                    . E caso a <b>data_inicial</b> for maior que a <b>data_final</b> é retornado uma <b>Exception</b>
+                    informando que a data inicial deve ser menor que a data final. <br><br>
+                    . E ao fim da função é calculado as horas inteiras extraida da variavel <b>horas</b> para a variavel
+                    <b>horas_totais</b>
+                    e os minutos restantes para a variavel <b>minutos_totais</b> <br>
+                    e no retorno da função é formatado uma string informando 'HH' horas e 'MM' minutos
                 </p>
             </div>
-            <!-- Adicione mais fotos conforme necessário -->
+            <br><br><br>
         </div>
     </div>
+    <footer>
+        <p>&copy; 2023 Marcelo & Rickson. Todos os direitos reservados.</p>
+    </footer>
 </body>
+
 </html>
