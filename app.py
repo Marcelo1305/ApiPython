@@ -8,6 +8,10 @@ app = Flask(__name__)
 def index():
     return render_template('index.html')
 
+@app.route('/apresentacao')
+def outra_pagina():
+    return render_template('apresentacao.html')
+
 @app.route('/api', methods=['GET'])
 def api():
     return jsonify({'message': 'Olá, mundo! Esta é uma API básica em Python.'})

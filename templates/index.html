@@ -8,10 +8,12 @@
   <script src="index.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.29.1/moment.min.js"></script>
   <link href="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/themes/prism-okaidia.min.css" rel="stylesheet">
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-T3c6CoIi6uLrA9TneNEoa7RxnatzjcDSCmG1MXxSR1GAsXEV/Dwwykc2MPK8M2HN" crossorigin="anonymous">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/prism/1.24.1/prism.min.js"></script>
 </head>
 
 <body>
+  <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-C6RzsynM9kWDrMNeT87bh95OGNyZPhcTNXj1NW7RuBCsyN/o0jlpcV8Qyq46cDfL" crossorigin="anonymous"></script>
   <script>
     Prism.highlightAll();
   </script>
@@ -20,9 +22,6 @@
     * {
       box-sizing: border-box;
     }
-    .verde{
-      color: rgb(45, 99, 50);
-    }
 
     body {
       font-family: Arial, Helvetica, sans-serif;
@@ -30,7 +29,7 @@
 
     /* Style the header */
     header {
-      background-color: #666;
+      background-color: #080825;
       padding: 30px;
       text-align: center;
       font-size: 35px;
@@ -71,7 +70,7 @@
 
     /* Style the footer */
     footer {
-      background-color: #777;
+      background-color: #080825;
       padding: 10px;
       /* text-align: center; */
       color: white;
@@ -93,20 +92,8 @@
       }
     }
 
-    code {
-      color: aliceblue;
-    }
-
-    pre {
-      background-color: #272626;
-      padding: 10px;
-      overflow-x: auto;
-      border-radius: 5px;
-      margin-bottom: 20px;
-    }
-
     h2 {
-      color: #333;
+      color: #ffffff;
     }
 
     p {
@@ -114,7 +101,7 @@
     }
 
     body {
-      background-color: rgb(228, 227, 227);
+      background-color: rgb(126, 155, 187);
     }
 
     div {
@@ -137,6 +124,9 @@
       border-collapse: collapse;
     }
   </style>
+  <div class="centro">
+    <img src=" {{ url_for('static', filename='img/logo.png') }} " alt="">
+  </div>
   <h2>Avaliação II</h2>
   <p>Desenvolver um algoritmo que seja capaz de receber dois parâmetros com data e hora e, a partir destes, calcular as
     horas úteis entre as datas. Como apoio, deve ser adotado uma tabela de expediente, contendo os campos abaixo.
@@ -155,21 +145,22 @@
       <form class="centro" id="meuForm">
         <div class="row">
           <label for="data_inicial">Data Inicial:</label>
-          <input type="datetime-local" id="data_inicial" name="data_inicial" required><br><br>
+          <input type="datetime-local" id="data_inicial" name="data_inicial" required><br>
 
           <label for="data_final">Data Final:</label>
-          <input type="datetime-local" id="data_final" name="data_final" required><br><br>
-
-          <input type="submit" value="Calcular">
+          <input type="datetime-local" id="data_final" name="data_final" required><br>
+        </div><p></p>
+        <div class="d-grid gap-2">
+          <input class="btn btn-primary" type="submit" value="Calcular">
         </div>
       </form>
-      <h1 class="centro" id="resultado"></h1>
+      <h1 type="button" class="centro" id="resultado"></h1>
     </nav>
 
     <article>
       <table class="centro" id="tabela">
         <thead style="border-collapse: collapse; text-align: center;">
-          <h2>Dias Úteis</h2>
+          <h2 style="color: #080825;">Dias Úteis</h2>
         </thead>
         <thead>
           <tr>
@@ -227,82 +218,9 @@
       </table>
     </article>
   </section>
-  <button onclick="mostrarCodigo()" hidden="true">Mostrar codigo</button>
   <footer id="footer">
-    <div class="apresentacao">
-      <h1>Documentação do Código Python</h1>
-      <h2>Função: calcular_horas</h2>
-      <p>
-        Esta função Python calcula a carga horária útil entre duas datas, considerando um conjunto padrão de horários de
-        trabalho em dias úteis.
-      </p>
-      <pre>
-        <code>
-      from datetime import datetime, timedelta
-        
-      def calcular_horas(data_inicial, data_final, dados = None):
-        <span class="verde"># Inicializa a variável horas como um objeto timedelta, que representa a diferença entre duas datas ou horas</span>
-        horas = timedelta()
-  
-        <span class="verde"># Atribui o valor de data_inicial à variável data_atual</span>
-        data_atual = data_inicial
-  
-        if dados == None:
-            <span class="verde"># Define uma lista de dicionários com informações sobre os dias da semana e horários associados</span>
-            dados = [
-                {'dia': 0, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                {'dia': 1, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                {'dia': 2, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                {'dia': 3, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                {'dia': 4, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': True},
-                {'dia': 5, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
-                {'dia': 6, 'hora_inicial': '08:00:00', 'hora_almoco': '12:00:00', 'retorno_almoco': '13:00:00', 'hora_saida': '17:00:00', 'util': False},
-            ]
-  
-        <span class="verde"># Verifica se a data inicial é menor que a data final</span>
-        if data_inicial < data_final:
-  
-            <span class="verde"># Enquanto a data atual for menor ou igual à data final</span>
-            while data_atual.date() <= data_final.date():
-                <span class="verde"># Procura na lista dados por um dicionário correspondente ao dia da semana da data_atual e que seja considerado útil</span>
-                dia = next((x for x in dados if x['dia'] == data_atual.weekday() and x['util']), None)
-  
-                <span class="verde"># Verifica se foi encontrado um dicionário correspondente ao dia da semana</span>
-                if dia is not None:
-                    <span class="verde"># Converte os horários de string para objetos datetime</span>
-                    h_inicial = datetime.strptime(dia['hora_inicial'], '%H:%M:%S')
-                    h_almoco = datetime.strptime(dia['hora_almoco'], '%H:%M:%S')
-                    h_retorno = datetime.strptime(dia['retorno_almoco'], '%H:%M:%S')
-                    h_fim = datetime.strptime(dia['hora_saida'], '%H:%M:%S')
-  
-                    <span class="verde"># Ajusta os horários de acordo com a data atual</span>
-                    h_inicial = max(data_inicial, datetime.combine(data_atual.date(), h_inicial.time()))
-                    h_almoco = min(data_final, datetime.combine(data_atual.date(), h_almoco.time()))
-                    h_retorno = max(data_inicial, datetime.combine(data_atual.date(), h_retorno.time()))
-                    h_fim = min(data_final, datetime.combine(data_atual.date(), h_fim.time()))
-  
-                    <span class="verde"># Calcula e acumula as horas trabalhadas</span>
-                    horas += h_almoco - h_inicial if h_almoco > h_inicial else timedelta()
-                    horas += h_fim - h_retorno if h_fim > h_retorno else timedelta()
-  
-                <span class="verde"># Avança para o próximo dia</span>
-                data_atual += timedelta(days=1)
-        else:
-            <span class="verde"># Se a data inicial não for menor que a data final, levanta uma exceção</span>
-            raise Exception("Data inicial deve ser menor que a data final")
-  
-        <span class="verde"># Converte os segundos totais em horas e minutos</span>
-        horas_totais = horas.total_seconds() // 3600
-        minutos_totais = (horas.total_seconds() % 3600) // 60
-  
-        <span class="verde"># Retorna uma string formatada com o total de horas e minutos</span>
-        return f'{int(horas_totais)} horas e {int(minutos_totais)} minutos'
-        </code>
-      </pre>
-      <h3>Descrição da função:</h3>
-      <p>
-        
-      </p>
+    <div class="centro">
+      <a href="https://apihoras.onrender.com/apresentacao"><button class="btn btn-primary" type="button">Ver o código</button></a>
     </div>
   </footer>
   <script>
@@ -393,5 +311,4 @@
     }
   </script>
 </body>
-
 </html>
